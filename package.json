@@ -1,0 +1,19 @@
+{
+  "name": "secret-uploader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^3.5.0"
+  },
+  "dependencies": {
+    "form-data": "^3.0.0",
+    "lodash.throttle": "^4.1.1"
+  }
+}
