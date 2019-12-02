@@ -1,6 +1,11 @@
 import request from "./request.node.mjs";
 
-let info = ({ publicKey, fileId, cancel, baseURL = "https://upload.uploadcare.com" }) =>
+let info = ({
+  publicKey,
+  fileId,
+  cancel,
+  baseURL = "https://upload.uploadcare.com"
+}) =>
   request({
     method: "GET",
     url: `${baseURL}/info/?jsonerrors=1&pub_key=${publicKey}&file_id=${fileId}`,
@@ -27,10 +32,25 @@ let base = ({
     cancel
   }).then(prettify);
 
+let url = ({ baseURL = "https://upload.uploadcare.com", publicKey, url, cancel }) =>
+  request({
+    method: "GET",
+    url: `${baseURL}/from_url/?jsonerrors=1&pub_key=${publicKey}&source_url=${decodeURIComponent(
+      url
+    )}`,
+    cancel
+  }).then(prettify);
+
+let status = ({ token, cancel, baseURL = "https://upload.uploadcare.com" }) =>
+  request({
+    method: "GET",
+    url: `${baseURL}/from_url/status/?jsonerrors=1&token=${token}`,
+    cancel
+  }).then(prettify);
 
 function prettify(result) {
   return camelizeKeys(JSON.parse(result.data));
-};
+}
 
 let SEPARATOR = /\W|_/g;
 function camelize(text) {
@@ -57,4 +77,4 @@ function camelizeKeys(source) {
   }, {});
 }
 
-export { info, base };
+export { info, base, url, status };

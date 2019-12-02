@@ -1,7 +1,7 @@
 import fs from "fs";
 import { promisify } from "util";
-
-import { upload } from "./upload.mjs";
+import { upload, uploadUrl } from "./upload.mjs";
+import CancelController from "./cancel.mjs";
 
 let read = promisify(fs.readFile);
 
@@ -10,10 +10,26 @@ let read = promisify(fs.readFile);
 // file,
 // filename: "image.png"
 
-read("/Users/jeetiss/Projects/secret-uploader/image.png")
-  .then(file => upload(file, { publicKey: "e817444de392775585a3" }))
+// read("/Users/jeetiss/Projects/secret-uploader/image.png")
+//   .then(file => upload(file, { publicKey: "e817444de392775585a3" }))
+//   .then(console.log)
+//   .catch(console.log);
+
+let imageUrl =
+  "https://mir24.tv/uploaded/images/2019/October/1efba0ca7e9634e8b05b0ab889aaaf3cf58c669ebd46a70f2dce4fe19a445a31.jpg";
+
+let cntr = new CancelController()
+
+uploadUrl(imageUrl, { publicKey: "e817444de392775585a3", progress: console.log, cancel: cntr })
   .then(console.log)
   .catch(console.log);
+
+process.on('SIGINT', () => {
+  console.log()
+  console.log("upload canceled");
+
+  cntr.cancel()
+});
 
 // request({
 //   method: "GET",
